@@ -23,13 +23,12 @@ class TopicController extends Controller
 
     public function store(CreateTopicFormRequest $request)
     {
-    	dd('test');
-  //   	$topic = $request->user()->topics()->create([
-  //   		'title' => $request->json('title'),
-  //   		'slug' => str_slug($request->json('title')),
-  //   		'body' => $request->json('body'),
-  //   		'section_id' => $request->json('section_id'),
-		// ]);
+    	$topic = $request->user()->topics()->create([
+    		'title' => $request->json('title'),
+    		'slug' => str_slug($request->json('title')),
+    		'body' => $request->json('body'),
+    		'section_id' => $request->json('section_id'),
+		]);
     	
     }
 }

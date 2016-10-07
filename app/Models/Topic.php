@@ -25,4 +25,9 @@ class Topic extends Model
     {
     	return $this->belongsTo(Section::class);
     }
+
+    public function topics()
+    {
+        return $this->hasMany(User::class);
+    }
 }
