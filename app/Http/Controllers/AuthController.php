@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Models\User;
+use App\Transformers\UserTransformer;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Http\Requests\Auth\RegisterFormRequest;
 
@@ -18,7 +19,7 @@ class AuthController extends Controller
     		'username' => $request->json('username'),
     		'email' => $request->json('email'),
     		'password' => bcrypt($request->json('password')),
-		]); 
+		]);
     }
 
     public function signin(Request $request)
@@ -32,14 +33,20 @@ class AuthController extends Controller
     			'error' => 'Could not authenticate',
 			], 500);
     	}
-    	
+
     	if( !$token){
     		return response()->json([
     			'error' => 'Could not authenticate',
 			], 401);
     	}
 
-    	return response()->json(compact('token'));
+        return fractal()
+            ->item($request->user())
+            ->transformWith(new UserTransformer)
+            ->addMeta([
+                'token' => $token,
+             ])
+            ->toArray();
     }
-    
+
 }
